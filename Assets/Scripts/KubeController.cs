@@ -3,51 +3,32 @@ using UnityEngine;
 public class KubeController : MonoBehaviour
 {
     Rigidbody rb;
-    bool moveForward = false;
-    bool isMoving = false;
-    public float forwardForce = 800f;
+
+    public float maxSpeed = 10f;
+    public float forwardForce = 2f;
+    public float sidewayForce = 100f;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (!isMoving) moveForward = true;
-        }
-    }
-
     void FixedUpdate()
     {
-        // We'll add velocity change force only once on keypress
-        if (moveForward)
+        // Move forward
+        rb.AddForce(0, 0, forwardForce, ForceMode.VelocityChange);
+
+        // Move sideways
+        if (Input.GetKey(KeyCode.A))
         {
-            // Add force to Kube's rigidbody
-            var direction = Vector3.forward;
-            var force = forwardForce;
-            var mode = ForceMode.VelocityChange;
-
-            // Apply force to Kube
-            applyForce(force, direction, mode);
-
-            // Clear forces
-            isMoving = true;
-            moveForward = false;
+            rb.AddForce(-sidewayForce, 0, 0, ForceMode.Acceleration);
         }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            rb.AddForce(sidewayForce, 0, 0, ForceMode.Acceleration);
+        }
+
+        // Clamp speed to maximum speed
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed - forwardForce);
     }
-
-    void applyForce(float force, Vector3 direction, ForceMode mode)
-    {
-        var velocity = direction * rb.mass * force * Time.fixedDeltaTime;
-        rb.AddForce(velocity, mode);
-    }
-
-    void OnCollisionEnter(Collision other)
-    {
-
-    }
-
 }
