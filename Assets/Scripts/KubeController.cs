@@ -4,10 +4,8 @@ public class KubeController : MonoBehaviour
 {
     Rigidbody rb;
     bool moveForward = false;
-    bool jump = false;
     bool isMoving = false;
-    float forwardForce = 800f;
-    float jumpForce = 400f;
+    public float forwardForce = 800f;
 
     void Awake()
     {
@@ -19,32 +17,37 @@ public class KubeController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (!isMoving) moveForward = true;
-            else jump = true;
         }
     }
 
     void FixedUpdate()
     {
         // We'll add velocity change force only once on keypress
-        if (moveForward || jump)
+        if (moveForward)
         {
             // Add force to Kube's rigidbody
-            var direction = jump ? Vector3.up : Vector3.forward;
-            var force = jump ? jumpForce : forwardForce;
+            var direction = Vector3.forward;
+            var force = forwardForce;
+            var mode = ForceMode.VelocityChange;
 
             // Apply force to Kube
-            applyForce(force, direction);
+            applyForce(force, direction, mode);
 
             // Clear forces
             isMoving = true;
             moveForward = false;
-            jump = false;
         }
     }
 
-    void applyForce(float force, Vector3 direction)
+    void applyForce(float force, Vector3 direction, ForceMode mode)
     {
         var velocity = direction * rb.mass * force * Time.fixedDeltaTime;
-        rb.AddForce(velocity, ForceMode.VelocityChange);
+        rb.AddForce(velocity, mode);
     }
+
+    void OnCollisionEnter(Collision other)
+    {
+
+    }
+
 }
