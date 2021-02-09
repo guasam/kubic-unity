@@ -34,6 +34,12 @@ public class KubeController : MonoBehaviour
             rb.AddForce(sidewayForce, 0, 0, ForceMode.Acceleration);
         }
 
+        // Respawn if fallen
+        if (rb.position.y < -2)
+        {
+            Debug.Log("Respawn");
+        }
+
         // Clamp speed to maximum speed
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed - forwardForce);
 
