@@ -5,6 +5,7 @@ public class KubeController : MonoBehaviour
 {
     Rigidbody rb;
     int score = 0;
+    bool isAlive = true;
 
     public float maxSpeed = 10f;
     public float forwardForce = 2f;
@@ -15,12 +16,17 @@ public class KubeController : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-
         scoreText.text = score.ToString();
     }
 
     void FixedUpdate()
     {
+        if (!isAlive)
+        {
+            rb.drag = 2f;
+            return;
+        }
+
         // Move forward
         rb.AddForce(0, 0, forwardForce, ForceMode.VelocityChange);
 
@@ -35,9 +41,11 @@ public class KubeController : MonoBehaviour
         }
 
         // Respawn if fallen
-        if (rb.position.y < -2)
+        if (rb.position.y < -0.2)
         {
-            Debug.Log("Respawn");
+            scoreText.text = "Ooops...";
+            isAlive = false;
+            return;
         }
 
         // Clamp speed to maximum speed
@@ -46,5 +54,23 @@ public class KubeController : MonoBehaviour
         // Increase score
         score++;
         scoreText.text = score.ToString();
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.collider.CompareTag("Hurdle"))
+        {
+            scoreText.text = "Ouch...";
+            isAlive = false;
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Finish"))
+        {
+            scoreText.text = "Finished";
+            isAlive = false;
+        }
     }
 }
