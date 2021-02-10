@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: af83d5b5bc80b03408ff773cce3736f1
+guid: 221e3b4452092d44196997d5b971d74c
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Roboto
+  - '?'
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
