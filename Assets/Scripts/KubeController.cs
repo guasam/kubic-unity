@@ -13,14 +13,21 @@ public class KubeController : MonoBehaviour
 
     public Text scoreText;
 
+    /// <summary>
+    /// Called when object gets instantiated
+    /// </summary>
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         scoreText.text = score.ToString();
     }
 
+    /// <summary>
+    /// Called every physics frame
+    /// </summary>
     void FixedUpdate()
     {
+        // Kube is alive or has been sacrificed
         if (!isAlive)
         {
             rb.drag = 2f;
@@ -56,8 +63,13 @@ public class KubeController : MonoBehaviour
         scoreText.text = score.ToString();
     }
 
+    /// <summary>
+    /// Handle Collision
+    /// </summary>
+    /// <param name="other"></param>
     void OnCollisionEnter(Collision other)
     {
+        // Hitting head with Hurdles
         if (other.collider.CompareTag("Hurdle"))
         {
             scoreText.text = "Ouch...";
@@ -65,8 +77,13 @@ public class KubeController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handle Trigger Collision
+    /// </summary>
+    /// <param name="other"></param>
     void OnTriggerEnter(Collider other)
     {
+        // Reached the finish line
         if (other.CompareTag("Finish"))
         {
             scoreText.text = "Finished";
