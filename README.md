@@ -8,5 +8,4 @@ To be continuted..
 
 <br>
 
-## Screenshot
--------------------
+<img src="Concepts/kubic.png" />
